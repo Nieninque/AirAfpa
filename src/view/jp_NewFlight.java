@@ -36,12 +36,14 @@ public class jp_NewFlight extends javax.swing.JPanel {
         lb_departureTime = new javax.swing.JLabel();
         lb_flightDuration = new javax.swing.JLabel();
         lb_flightprice = new javax.swing.JLabel();
-        arrivalCity = new javax.swing.JComboBox<>();
-        departureDate = new javax.swing.JTextField();
-        departureTime = new javax.swing.JTextField();
-        flightDuration = new javax.swing.JTextField();
-        flightPrice = new javax.swing.JTextField();
-        departureCity = new javax.swing.JComboBox<>();
+        cb_departureCity = new javax.swing.JComboBox<>();
+        cb_arrivalCity = new javax.swing.JComboBox<>();
+        tf_departureDate = new javax.swing.JTextField();
+        tf_departureTime = new javax.swing.JTextField();
+        tf_flightDuration = new javax.swing.JTextField();
+        tf_flightPrice = new javax.swing.JTextField();
+        pb_valid = new javax.swing.JButton();
+        pb_cancel = new javax.swing.JButton();
 
         jLabel1.setText("jLabel1");
 
@@ -53,8 +55,8 @@ public class jp_NewFlight extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 42, 0);
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
         add(JLnewFlight, gridBagConstraints);
 
         lb_departureCity.setText("Ville de départ");
@@ -63,7 +65,7 @@ public class jp_NewFlight extends javax.swing.JPanel {
         gridBagConstraints.gridy = 1;
         gridBagConstraints.ipadx = 10;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 7, 0);
+        gridBagConstraints.insets = new java.awt.Insets(5, 4, 12, 4);
         add(lb_departureCity, gridBagConstraints);
 
         lb_arrivalCity.setText("Ville d'arrivée");
@@ -72,6 +74,7 @@ public class jp_NewFlight extends javax.swing.JPanel {
         gridBagConstraints.gridy = 2;
         gridBagConstraints.ipadx = 10;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 4, 5, 4);
         add(lb_arrivalCity, gridBagConstraints);
 
         lb_departureDate.setText("Date de départ (jj/mm/aaaa)");
@@ -80,7 +83,7 @@ public class jp_NewFlight extends javax.swing.JPanel {
         gridBagConstraints.gridy = 3;
         gridBagConstraints.ipadx = 10;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 7, 0);
+        gridBagConstraints.insets = new java.awt.Insets(5, 4, 12, 4);
         add(lb_departureDate, gridBagConstraints);
 
         lb_departureTime.setText("Heure de départ (hh:mm)");
@@ -89,7 +92,7 @@ public class jp_NewFlight extends javax.swing.JPanel {
         gridBagConstraints.gridy = 4;
         gridBagConstraints.ipadx = 10;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 7, 0);
+        gridBagConstraints.insets = new java.awt.Insets(5, 4, 12, 4);
         add(lb_departureTime, gridBagConstraints);
 
         lb_flightDuration.setText("Durée du vol (> 9 min)");
@@ -98,7 +101,7 @@ public class jp_NewFlight extends javax.swing.JPanel {
         gridBagConstraints.gridy = 5;
         gridBagConstraints.ipadx = 10;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 7, 0);
+        gridBagConstraints.insets = new java.awt.Insets(5, 4, 12, 4);
         add(lb_flightDuration, gridBagConstraints);
 
         lb_flightprice.setText("Tarif  en euros au format _,xx");
@@ -107,93 +110,126 @@ public class jp_NewFlight extends javax.swing.JPanel {
         gridBagConstraints.gridy = 6;
         gridBagConstraints.ipadx = 10;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 7, 0);
+        gridBagConstraints.insets = new java.awt.Insets(5, 4, 12, 4);
         add(lb_flightprice, gridBagConstraints);
 
-        arrivalCity.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        arrivalCity.setPreferredSize(new java.awt.Dimension(150, 25));
-        arrivalCity.addActionListener(new java.awt.event.ActionListener() {
+        cb_departureCity.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cb_departureCity.setPreferredSize(new java.awt.Dimension(150, 25));
+        cb_departureCity.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                arrivalCityActionPerformed(evt);
+                cb_departureCityActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.insets = new java.awt.Insets(5, 4, 5, 4);
+        add(cb_departureCity, gridBagConstraints);
+
+        cb_arrivalCity.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cb_arrivalCity.setPreferredSize(new java.awt.Dimension(150, 25));
+        cb_arrivalCity.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cb_arrivalCityActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 7, 0);
-        add(arrivalCity, gridBagConstraints);
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.insets = new java.awt.Insets(5, 4, 12, 4);
+        add(cb_arrivalCity, gridBagConstraints);
 
-        departureDate.setText("jTextField2");
-        departureDate.setPreferredSize(new java.awt.Dimension(150, 25));
-        departureDate.addActionListener(new java.awt.event.ActionListener() {
+        tf_departureDate.setPreferredSize(new java.awt.Dimension(150, 25));
+        tf_departureDate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                departureDateActionPerformed(evt);
+                tf_departureDateActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 3;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 7, 0);
-        add(departureDate, gridBagConstraints);
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.insets = new java.awt.Insets(5, 4, 12, 4);
+        add(tf_departureDate, gridBagConstraints);
 
-        departureTime.setText("jTextField3");
-        departureTime.setPreferredSize(new java.awt.Dimension(150, 25));
-        departureTime.addActionListener(new java.awt.event.ActionListener() {
+        tf_departureTime.setPreferredSize(new java.awt.Dimension(150, 25));
+        tf_departureTime.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                departureTimeActionPerformed(evt);
+                tf_departureTimeActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 4;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 7, 0);
-        add(departureTime, gridBagConstraints);
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.insets = new java.awt.Insets(5, 4, 12, 4);
+        add(tf_departureTime, gridBagConstraints);
 
-        flightDuration.setText("jTextField4");
-        flightDuration.setPreferredSize(new java.awt.Dimension(150, 25));
+        tf_flightDuration.setPreferredSize(new java.awt.Dimension(150, 25));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 5;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 7, 0);
-        add(flightDuration, gridBagConstraints);
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.insets = new java.awt.Insets(5, 4, 12, 4);
+        add(tf_flightDuration, gridBagConstraints);
 
-        flightPrice.setText("jTextField5");
-        flightPrice.setPreferredSize(new java.awt.Dimension(150, 25));
+        tf_flightPrice.setPreferredSize(new java.awt.Dimension(150, 25));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 6;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 7, 0);
-        add(flightPrice, gridBagConstraints);
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.insets = new java.awt.Insets(5, 4, 12, 4);
+        add(tf_flightPrice, gridBagConstraints);
 
-        departureCity.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        departureCity.setPreferredSize(new java.awt.Dimension(150, 25));
+        pb_valid.setText("Valider");
+        pb_valid.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pb_validActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
-        add(departureCity, gridBagConstraints);
+        gridBagConstraints.gridy = 7;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 4, 5, 4);
+        add(pb_valid, gridBagConstraints);
+
+        pb_cancel.setText("Annuler");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 7;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 4, 5, 4);
+        add(pb_cancel, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void arrivalCityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_arrivalCityActionPerformed
+    private void cb_arrivalCityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb_arrivalCityActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_arrivalCityActionPerformed
+    }//GEN-LAST:event_cb_arrivalCityActionPerformed
 
-    private void departureDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_departureDateActionPerformed
+    private void tf_departureDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_departureDateActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_departureDateActionPerformed
+    }//GEN-LAST:event_tf_departureDateActionPerformed
 
-    private void departureTimeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_departureTimeActionPerformed
+    private void tf_departureTimeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_departureTimeActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_departureTimeActionPerformed
+    }//GEN-LAST:event_tf_departureTimeActionPerformed
+
+    private void pb_validActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pb_validActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_pb_validActionPerformed
+
+    private void cb_departureCityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb_departureCityActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cb_departureCityActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel JLnewFlight;
-    private javax.swing.JComboBox<String> arrivalCity;
-    private javax.swing.JComboBox<String> departureCity;
-    private javax.swing.JTextField departureDate;
-    private javax.swing.JTextField departureTime;
-    private javax.swing.JTextField flightDuration;
-    private javax.swing.JTextField flightPrice;
+    private javax.swing.JComboBox<String> cb_arrivalCity;
+    private javax.swing.JComboBox<String> cb_departureCity;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel lb_arrivalCity;
     private javax.swing.JLabel lb_departureCity;
@@ -201,5 +237,11 @@ public class jp_NewFlight extends javax.swing.JPanel {
     private javax.swing.JLabel lb_departureTime;
     private javax.swing.JLabel lb_flightDuration;
     private javax.swing.JLabel lb_flightprice;
+    private javax.swing.JButton pb_cancel;
+    private javax.swing.JButton pb_valid;
+    private javax.swing.JTextField tf_departureDate;
+    private javax.swing.JTextField tf_departureTime;
+    private javax.swing.JTextField tf_flightDuration;
+    private javax.swing.JTextField tf_flightPrice;
     // End of variables declaration//GEN-END:variables
 }
