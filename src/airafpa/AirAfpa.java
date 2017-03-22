@@ -8,6 +8,7 @@ package airafpa;
 import javax.swing.JFrame;
 import static javax.swing.JFrame.EXIT_ON_CLOSE;
 import view.FlightView;
+import view.NewFlightView;
 
 /**
  *
@@ -24,7 +25,7 @@ public class AirAfpa {
         // TODO code application logic here
         JFrame frame = new JFrame();
         
-      FlightView flightView =  new FlightView();
+      NewFlightView flightView =  new NewFlightView();
       
       frame.setTitle("C'est plus, C'est moins");
         frame.setSize(1000, 691);

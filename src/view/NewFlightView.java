@@ -9,12 +9,12 @@ package view;
  *
  * @author Formation
  */
-public class jp_NewFlight extends javax.swing.JPanel {
+public class NewFlightView extends javax.swing.JPanel {
 
     /**
      * Creates new form NewFlightView
      */
-    public jp_NewFlight() {
+    public NewFlightView() {
         initComponents();
     }
 
@@ -56,7 +56,7 @@ public class jp_NewFlight extends javax.swing.JPanel {
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
+        gridBagConstraints.insets = new java.awt.Insets(21, 21, 21, 21);
         add(JLnewFlight, gridBagConstraints);
 
         lb_departureCity.setText("Ville de départ");
