@@ -17,6 +17,7 @@ public class NewFlightView extends javax.swing.JPanel {
     public NewFlightView() {
         initComponents();
     }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -36,8 +37,8 @@ public class NewFlightView extends javax.swing.JPanel {
         lb_departureTime = new javax.swing.JLabel();
         lb_flightDuration = new javax.swing.JLabel();
         lb_flightprice = new javax.swing.JLabel();
-        cb_departureCity = new javax.swing.JComboBox<>();
-        cb_arrivalCity = new javax.swing.JComboBox<>();
+        cb_departureCity = new javax.swing.JComboBox<String>();
+        cb_arrivalCity = new javax.swing.JComboBox<String>();
         tf_departureDate = new javax.swing.JTextField();
         tf_departureTime = new javax.swing.JTextField();
         tf_flightDuration = new javax.swing.JTextField();
@@ -113,7 +114,7 @@ public class NewFlightView extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(5, 4, 12, 4);
         add(lb_flightprice, gridBagConstraints);
 
-        cb_departureCity.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cb_departureCity.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cb_departureCity.setPreferredSize(new java.awt.Dimension(150, 25));
         cb_departureCity.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -127,7 +128,7 @@ public class NewFlightView extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(5, 4, 5, 4);
         add(cb_departureCity, gridBagConstraints);
 
-        cb_arrivalCity.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cb_arrivalCity.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cb_arrivalCity.setPreferredSize(new java.awt.Dimension(150, 25));
         cb_arrivalCity.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -141,6 +142,7 @@ public class NewFlightView extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(5, 4, 12, 4);
         add(cb_arrivalCity, gridBagConstraints);
 
+        tf_departureDate.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
         tf_departureDate.setPreferredSize(new java.awt.Dimension(150, 25));
         tf_departureDate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -176,6 +178,11 @@ public class NewFlightView extends javax.swing.JPanel {
         add(tf_flightDuration, gridBagConstraints);
 
         tf_flightPrice.setPreferredSize(new java.awt.Dimension(150, 25));
+        tf_flightPrice.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tf_flightPriceActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 6;
@@ -224,6 +231,10 @@ public class NewFlightView extends javax.swing.JPanel {
     private void cb_departureCityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb_departureCityActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cb_departureCityActionPerformed
+
+    private void tf_flightPriceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_flightPriceActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tf_flightPriceActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
