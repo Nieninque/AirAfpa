@@ -5,16 +5,19 @@
  */
 package view;
 
+import controller.NewFlightController;
+
 /**
  *
  * @author Formation
  */
 public class NewFlightView extends javax.swing.JPanel {
 
+    
     /**
      * Creates new form NewFlightView
      */
-    public NewFlightView() {
+    public NewFlightView(NewFlightController nfc) {
         initComponents();
     }
     
@@ -213,11 +216,11 @@ public class NewFlightView extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cb_arrivalCityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb_arrivalCityActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_cb_arrivalCityActionPerformed
 
     private void tf_departureDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_departureDateActionPerformed
-        // TODO add your handling code here:
+        String departingDate;
     }//GEN-LAST:event_tf_departureDateActionPerformed
 
     private void tf_departureTimeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_departureTimeActionPerformed

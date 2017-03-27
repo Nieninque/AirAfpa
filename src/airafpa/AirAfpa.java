@@ -5,6 +5,8 @@
  */
 package airafpa;
 
+import controller.NewFlightController;
+import dao.FlightDAO;
 import javax.swing.JFrame;
 import static javax.swing.JFrame.EXIT_ON_CLOSE;
 import view.FlightView;
@@ -24,12 +26,11 @@ public class AirAfpa {
     public static void main(String[] args) {
         // TODO code application logic here
         JFrame frame = new JFrame();
-        
-      NewFlightView flightView =  new NewFlightView();
+      FlightDAO flightDAO = new FlightDAO();
+        NewFlightController nfc = new NewFlightController(flightDAO);
+      NewFlightView flightView =  new NewFlightView(nfc);
       
-      frame.setTitle("C'est plus, C'est moins");
         frame.setSize(1000, 691);
-//        this.setMinimumSize(new Dimension(340, 480));
         frame.setResizable(false);
         frame.setLocationRelativeTo(null);
         frame.setLocation(450, 110);

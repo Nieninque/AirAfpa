@@ -19,14 +19,15 @@ import model.Flight;
  */
 public class NewFlightController {
 
-    public NewFlightController() {
+    FlightDAO fDao = new FlightDAO();
+    
+    public NewFlightController(FlightDAO flightdao) {
+        
     }
 
     //methode called in the listener of the validation button of the new flight view
     public void addFlight(String departingAirport, String arrivalAirport, String departingDate, String departingTime, int flightDuration, double flightPrice) {
 
-        //instanciation of a controller to use his blinkFlight methode
-        NewFlightController nfc = new NewFlightController();
         //instanciation of a Flight, to stock informations of the new flight in it
         Flight newFlight = new Flight();
         //instanciation of a newFlightDAO to use his methodes as well
@@ -52,7 +53,7 @@ public class NewFlightController {
             return;
         }
 
-        if (nfc.blinkFlight(newFlight)) {
+        if (this.blinkFlight(newFlight)) {
             Flight createdFlight = newFlightDao.create(newFlight);
         } else {
             //if the blinkFlight methode return false, this error message in a pop up
@@ -69,7 +70,7 @@ public class NewFlightController {
 
         //preparing casting of a String into a date to compare it
         String hour = newFlight.getDeparting_hour();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy hh:mi");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy hh:mm");
         
         Date dateTime = null; 
         //get today's dateTime
@@ -95,7 +96,7 @@ public class NewFlightController {
             return false;
         }
 
-        if (newFlight.getDeparting_aita() == newFlight.getArrival_aita()) {
+        if (newFlight.getDeparting_aita().equals(newFlight.getArrival_aita()) ) {
             //of course a flight could not start and finish on the same airport, we don't have concorde 
             return false;
         }
@@ -110,7 +111,7 @@ public class NewFlightController {
             return false;
         }
         
-        if (dateTime.before(date) || dateTime.equals(date)){
+        if (dateTime.before(date)){
             //now I have tomorows first hour to compare my input
             return false;
         }
@@ -118,5 +119,7 @@ public class NewFlightController {
         //I think this is enought tests to say "you can go to database" !
         return true;
     }
+    
+    
 
 }
