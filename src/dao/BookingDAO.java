@@ -11,13 +11,14 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.Booking;
+import model.Flight;
 
 /**
  *
  * @author Salim El Moussaoui <salim.elmoussaoui.afpa2017@gmail.com>
- * @author Cedric DELHOME
- * @author Laure-Helene Soyeux
  */
 public class BookingDAO extends DAO<Booking, Long> {
 
@@ -267,4 +268,43 @@ public class BookingDAO extends DAO<Booking, Long> {
         return isValid;
     }
 
+    public ArrayList<Booking> find(Flight flight) {
+        // create array booking empty
+        
+        ArrayList<Booking> alBooking = new ArrayList();
+
+        //check if connect db
+        if (this.bddmanager.connect()) {
+
+            try {
+                // create statement for find 
+                Statement st = this.bddmanager.getConnectionManager()
+                        .createStatement();
+                // create requete add primary key
+                String requete = "SELECT * FROM bookings WHERE id = " + flight.getId();
+                // excute requete
+                ResultSet rs = st.executeQuery(requete);
+                // if result is full
+                if (rs.next()) {
+                    Booking booking = new Booking();             
+                    booking.setId(rs.getLong("id"));
+                    booking.setUser_id(rs.getLong("user_id"));
+                    booking.setFlight_id(rs.getLong("flight_id"));
+                    booking.setPlace(rs.getInt("place"));
+                    
+                    alBooking.add(booking);
+                    
+                }
+
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                return alBooking;
+            }
+
+        } else {
+            return alBooking;
+        }
+
+        return alBooking;
+    }
 }

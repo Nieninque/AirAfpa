@@ -8,8 +8,6 @@ package model;
 /**
  *
  * @author Salim El Moussaoui <salim.elmoussaoui.afpa2017@gmail.com>
- * @author Cedric DELHOME
- * @author Laure-Helene Soyeux
  */
 public class Booking {
     private long id;
@@ -102,7 +100,6 @@ public class Booking {
         }
         return true;
     }
-    
-    
+ 
     
 }

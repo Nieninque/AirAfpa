@@ -16,8 +16,6 @@ import model.User;
 /**
  *
  * @author Salim El Moussaoui <salim.elmoussaoui.afpa2017@gmail.com>
- * @author Cedric DELHOME
- * @author Laure-Helene Soyeux
  */
 public class UserDAO extends DAO<User, Long> {
 
@@ -308,5 +306,38 @@ public class UserDAO extends DAO<User, Long> {
 
         return isValid;
     }
+    
+ 
+    public ArrayList<Long> getAll(String function) {
+        // create array list user empty
+        ArrayList<Long> listUser = new ArrayList<>();
+        if (this.bddmanager.connect()) {
 
+            try {
+                // create statement 
+                Statement st = this.bddmanager
+                        .getConnectionManager()
+                        .createStatement();
+                // create requete 
+                String requete = "SELECT users.id FROM users JOIN functions ON functions.id=users.function WHERE functions.definition LIKE '"+ function + "'";
+                // excute requete
+                ResultSet rs = st.executeQuery(requete);
+                // insert all users in array object user
+
+                while (rs.next()) {
+
+                    listUser.add(rs.getLong("id"));
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                return listUser;
+            }
+
+        } else {
+            return listUser;
+        }
+
+        return listUser;
+    }
+ 
 }

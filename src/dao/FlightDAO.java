@@ -16,15 +16,14 @@ import model.Flight;
 /**
  *
  * @author Salim El Moussaoui <salim.elmoussaoui.afpa2017@gmail.com>
- * @author Cedric DELHOME
- * @author Laure-Helene Soyeux
  */
 public class FlightDAO extends DAO<Flight, Long> {
 
     public FlightDAO() {
         super();
     }
-   /**
+
+    /**
      *
      * Create flight
      *
@@ -55,17 +54,17 @@ public class FlightDAO extends DAO<Flight, Long> {
                         + ") VALUES (?,?,?,?,?,?,?,?,?,?,?)";
                 // prepared requete and get return generated key
                 PreparedStatement pst = this.bddmanager.getConnectionManager()
-                   .prepareStatement(requete, Statement.RETURN_GENERATED_KEYS);
+                        .prepareStatement(requete, Statement.RETURN_GENERATED_KEYS);
                 // insert value in requete
                 pst.setString(1, flight.getDeparting_aita());
                 pst.setString(2, flight.getArrival_aita());
                 pst.setString(3, flight.getDeparting_hour());
                 pst.setInt(4, flight.getDuration());
-                pst.setDouble(5, flight.getPrice());  
+                pst.setDouble(5, flight.getPrice());
                 // if it's null
-                 if (flight.getId_pilot() == 0) {         
+                if (flight.getId_pilot() == 0) {
                     pst.setNull(6, Types.BIGINT);
-                } else {          
+                } else {
                     pst.setLong(6, flight.getId_pilot());
                 }
                 if (Long.valueOf(flight.getId_copilot()) == 0) {
@@ -89,7 +88,7 @@ public class FlightDAO extends DAO<Flight, Long> {
                 } else {
                     pst.setLong(10, flight.getId_staff3());
                 }
-                pst.setBoolean(11, flight.getPlanned());
+                pst.setBoolean(11, flight.isPlanned());
 
                 // excute insert row in table
                 int insert = pst.executeUpdate();
@@ -117,6 +116,7 @@ public class FlightDAO extends DAO<Flight, Long> {
 
         return flightCreate;
     }
+
     /**
      * Update flight
      *
@@ -154,10 +154,10 @@ public class FlightDAO extends DAO<Flight, Long> {
                 pst.setInt(4, flight.getDuration());
                 pst.setDouble(5, flight.getPrice());
                 // if it's null 
-                if (flight.getId_pilot() == 0) {         
+                if (flight.getId_pilot() == 0) {
                     pst.setNull(6, Types.BIGINT);
 
-                } else {          
+                } else {
                     pst.setLong(6, flight.getId_pilot());
                 }
                 if (Long.valueOf(flight.getId_copilot()) == 0) {
@@ -182,12 +182,12 @@ public class FlightDAO extends DAO<Flight, Long> {
                 } else {
                     pst.setLong(10, flight.getId_staff3());
                 }
-                pst.setBoolean(11, flight.getPlanned());
+                pst.setBoolean(11, flight.isPlanned());
                 pst.setLong(12, flight.getId());
                 // excute update row in table
                 int insert = pst.executeUpdate();
                 // if insert in table 
-                if (insert != 0) {            
+                if (insert != 0) {
                     success = true;
                 }
             } catch (SQLException ex) {
@@ -239,6 +239,7 @@ public class FlightDAO extends DAO<Flight, Long> {
         return success;
 
     }
+
     /**
      * get all flights
      *
@@ -246,17 +247,35 @@ public class FlightDAO extends DAO<Flight, Long> {
      */
     @Override
     public ArrayList getAll() {
-         // create array list flight empty
+        // create array list flight empty
         ArrayList<Flight> listFlight = new ArrayList<>();
         if (this.bddmanager.connect()) {
 
             try {
-                 // create statement 
+                // create statement 
                 Statement st = this.bddmanager
                         .getConnectionManager()
                         .createStatement();
-                 // create requete 
-                String requete = "SELECT * FROM flights";
+                // create requete 
+                String requete = "SELECT flights.id,"
+                        + "flights.departing_aita, "
+                        + "AD.city AS departing_city,  "
+                        + "AD.country AS departing_country, "
+                        + "flights.arrival_aita, "
+                        + "AA.city as arrival_city, "
+                        + "AA.country AS arrival_country,"
+                        + "flights.departing_hour, "
+                        + "flights.duration,"
+                        + "flights.price,"
+                        + "flights.id_pilot,"
+                        + "flights.id_copilot,"
+                        + "flights.id_staff1,"
+                        + "flights.id_staff2,"
+                        + "flights.id_staff3,"
+                        + "flights.planned "
+                        + "FROM flights "
+                        + "JOIN airports as AD on AD.aita=flights.departing_aita "
+                        + "JOIN airports as AA on AA.aita = flights.arrival_aita";
                 // excute requete
                 ResultSet rs = st.executeQuery(requete);
                 // insert all flights in array object flight
@@ -264,7 +283,11 @@ public class FlightDAO extends DAO<Flight, Long> {
                     Flight el = new Flight(
                             rs.getLong("id"),
                             rs.getString("departing_aita"),
-                            rs.getString("Arrival_aita"),
+                            rs.getString("departing_city"),
+                            rs.getString("departing_country"),
+                            rs.getString("arrival_aita"),
+                            rs.getString("arrival_city"),
+                            rs.getString("arrival_country"),
                             rs.getString("departing_hour"),
                             rs.getInt("duration"),
                             rs.getDouble("price"),
@@ -274,6 +297,7 @@ public class FlightDAO extends DAO<Flight, Long> {
                             rs.getInt("id_staff2"),
                             rs.getInt("id_staff3"),
                             rs.getBoolean("planned")
+                         
                     );
                     listFlight.add(el);
 
@@ -290,6 +314,7 @@ public class FlightDAO extends DAO<Flight, Long> {
 
         return listFlight;
     }
+
     /**
      * find flight
      *
@@ -309,9 +334,9 @@ public class FlightDAO extends DAO<Flight, Long> {
                         .createStatement();
                 // create requete add primary key
                 String requete = "SELECT * FROM flights WHERE id = " + primary_key;
-                 // excute requete
+                // excute requete
                 ResultSet rs = st.executeQuery(requete);
-                  // if result is full
+                // if result is full
                 if (rs.next()) {
                     // insert flights in object
                     flight.setId(rs.getLong("id"));
@@ -356,7 +381,49 @@ public class FlightDAO extends DAO<Flight, Long> {
 
         return isValid;
     }
+
+    public boolean isBooked(Flight flight) {
+
+        BookingDAO bookingInstance = new BookingDAO();
+
+        return !bookingInstance.find(flight).isEmpty();
+    }
     
+    public Flight.InOut find(Flight flight) {
+        // create array booking empty
+        String[] data = new String[4];
+        int i = 0;
+                    
+        //check if connect db
+        if (this.bddmanager.connect()) {
+
+            try {
+                // create statement for find 
+                Statement st = this.bddmanager.getConnectionManager()
+                        .createStatement();
+                // create requete add primary key
+                String requete = "SELECT airports.city,airports.pays FROM flights JOIN airports ON flights.departing_aita = airports.aita OR flights.arrival_aita = airports.aita WHERE flights.id= " + flight.getId();
+                // excute requete
+                ResultSet rs = st.executeQuery(requete);
+                // if result is full
+                while (rs.next()) {
+                    data[i] = rs.getString("city");
+                    data[i+1] = rs.getString("pays");
+                    i += 2;
+                }
+                flight.setDetailsAirport(data[0],data[1],data[2],data[3]);
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                return flight.getDetailsAirport();
+            }
+
+        } else {
+            return flight.getDetailsAirport();
+        }
+
+        return flight.getDetailsAirport();
+    }
     
 
-}
+
+   }

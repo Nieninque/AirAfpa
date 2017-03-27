@@ -16,8 +16,6 @@ import model.AccessSite;
 /**
  *
  * @author Salim El Moussaoui <salim.elmoussaoui.afpa2017@gmail.com>
- * @author Cedric DELHOME
- * @author Laure-Helene Soyeux
  */
 public class AccessSiteDAO extends DAO<AccessSite, Long> {
 

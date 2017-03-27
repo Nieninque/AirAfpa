@@ -6,13 +6,15 @@
 package dao;
 
 import db.ConnectDB;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
+
 
 /**
  *
  * @author Salim El Moussaoui <salim.elmoussaoui.afpa2017@gmail.com>
- * @author Cedric DELHOME
- * @author Laure-Helene Soyeux
  */
 public abstract class DAO<T,S> {
     protected ConnectDB bddmanager = null;
@@ -48,5 +50,26 @@ public abstract class DAO<T,S> {
      * @return collection row
      */
     public abstract T find(S primary_key);
-  
+
+    public ResultSet queryBuilder (String query){
+
+        
+        ResultSet rs = null;
+   
+        if (this.bddmanager.connect()) {
+       
+            try {
+                     Statement st = this.bddmanager.getConnectionManager().createStatement();
+         rs = st.executeQuery(query);
+        }
+        catch (SQLException ex) {
+            ex.printStackTrace();
+            return rs;
+        }
+    
+    }
+    else {return rs;}
+   return rs;}
+    
+    
 }
