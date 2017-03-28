@@ -66,7 +66,7 @@ public class NewFlightView extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(21, 21, 21, 21);
         add(JLnewFlight, gridBagConstraints);
 
-        lb_departureCity.setText("Ville de départ");
+        lb_departureCity.setText("Aéroport de départ");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
@@ -75,7 +75,7 @@ public class NewFlightView extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(5, 4, 12, 4);
         add(lb_departureCity, gridBagConstraints);
 
-        lb_arrivalCity.setText("Ville d'arrivée");
+        lb_arrivalCity.setText("Aéroport d'arrivée");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
@@ -84,7 +84,7 @@ public class NewFlightView extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(5, 4, 5, 4);
         add(lb_arrivalCity, gridBagConstraints);
 
-        lb_departureDate.setText("Date de départ (jj/mm/aaaa)");
+        lb_departureDate.setText("Date de départ (aaaa-mm-dd)");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;

@@ -25,6 +25,7 @@ public class NewFlightController {
 
     FlightDAO fDao = new FlightDAO();
     Flight fModel = new Flight();
+    String errorBlink ="";
     
     public NewFlightController(FlightDAO flightdao) {
         this.fDao = flightdao;
@@ -33,8 +34,8 @@ public class NewFlightController {
     //methode called in the listener of the validation button of the new flight view
     public void addFlight(String departingAirport, String arrivalAirport, String departingDate, String departingTime, String flightDuration, String flightPrice) {
 
-        //concatenation of the two Strings date and time to insert them on the DateTime zone
-        String hour = departingDate + " " + departingTime;
+        //concatenation of the two Strings todayDate and time to insert them on the DateTime zone
+        String hour = departingDate + " " + departingTime + ":00";
         //initialisation of the error message
         String errorMessage;
         //variables needed to parse Strings into int and double
@@ -49,7 +50,7 @@ public class NewFlightController {
             JOptionPane.showMessageDialog(null, errorMessage);
             return;
         }
-//TODO airports city => AITA        
+       
 
         //catching types errors on the user input by trying to insert informations on newFlight
         try {
@@ -64,68 +65,73 @@ public class NewFlightController {
             JOptionPane.showMessageDialog(null, errorMessage);
             return;
         }
-
+        
         if (this.blinkFlight(this.fModel)) {
             Flight createdFlight = this.fDao.create(this.fModel);
-        } else {
+            String success = "Le vol a été ajouté aux vols en attente";
+            JOptionPane.showMessageDialog(null, success);
+        }else {
             //if the blinkFlight methode return false, this error message in a pop up
-            errorMessage = "Les informations saisies ne sont pas cohérentes, "
-                    + "vérifiez que votre aéroport de départ et d'arrivée "
-                    + "soient différents ou encore vos dates ...";
-            JOptionPane.showMessageDialog(null, errorMessage);
+            
+            JOptionPane.showMessageDialog(null, errorBlink);
+            return;
         }
-
+        
     }//end addFlight methode
 
     //blinking a bit my code (after the casting of the values on addFlight methode)
     public boolean blinkFlight(Flight newFlight) {
 
-        //preparing casting of a String into a date to compare it
+        //preparing casting of a String into a todayDate to compare it
         String hour = newFlight.getDeparting_hour();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm");
-        
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
         Date dateTime = null; 
+        try {
+            //casting of the todayDate
+            dateTime = sdf.parse(hour);
+        } catch (ParseException ex) {
+            ex.printStackTrace();
+            errorBlink = "La date saisie est incorrecte";
+            return false;
+        }
+        
+        
         //get today's dateTime
-        Date date= new java.util.Date(); 
+        Date todayDate= new java.util.Date(); 
         //instanciation of a gregorian calendar to use its methodes
         GregorianCalendar gregorianCalendar = new GregorianCalendar();
-        gregorianCalendar.setTime(date);
-        //+ 1 day on the date of today
+        gregorianCalendar.setTime(todayDate);
+        //+ 1 day on the todayDate of today
         gregorianCalendar.add(GregorianCalendar.DAY_OF_MONTH, 1);
         // back to midnight because it's written "the next day" not "24h later"
         gregorianCalendar.set(GregorianCalendar.HOUR, 0);
         gregorianCalendar.set(GregorianCalendar.MINUTE, 0);
         //even the seconds just to be clean 
         gregorianCalendar.set(GregorianCalendar.SECOND, 0);
-        //now I can put it back on date
-        date = gregorianCalendar.getTime();
+        //now I can put it back on todayDate
+        todayDate = gregorianCalendar.getTime();
         
-        try {
-            //casting of the date
-            dateTime = sdf.parse(hour);
-        } catch (ParseException ex) {
-            ex.printStackTrace();
-            String errorMessage = "La date saisie est incorrecte";
-            JOptionPane.showMessageDialog(null, errorMessage);
-            return false;
-        }
+        
 
         if (newFlight.getDeparting_aita().equals(newFlight.getArrival_aita()) ) {
             //of course a flight could not start and finish on the same airport, we don't have concorde 
+            this.errorBlink = "L'aéroport de départ et celui d'arrivée sont identiques";
             return false;
         }
 
         if (newFlight.getDuration() <= 9) {
-            //just Specifications 
+            this.errorBlink = "La durée minimale de vol est de 9 minutes ";
             return false;
         }
 
         if (newFlight.getPrice() < 0) {
+            this.errorBlink = "Un prix doit être positif ... ";
             //just logic don't you think ?
             return false;
         }
         
-        if (dateTime.before(date)){
+        if (todayDate.before(dateTime)){
+            this.errorBlink = "le vol ne peut pas partir avant demain ";
             //now I have tomorows first hour to compare my input
             return false;
         }
@@ -143,8 +149,8 @@ public class NewFlightController {
         airports = airportDAO.getAll();
         
         for(int i = 0; i < airports.size(); i++){
-            cb_departureCity.addItem(airports.get(i).getCity());
-            cb_arrivalCity.addItem(airports.get(i).getCity());
+            cb_departureCity.addItem(airports.get(i).getAita());
+            cb_arrivalCity.addItem(airports.get(i).getAita());
         }
 
     }//end addCombobox methode

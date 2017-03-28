@@ -41,7 +41,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="lb_departureCity">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Ville de d&#xe9;part"/>
+        <Property name="text" type="java.lang.String" value="A&#xe9;roport de d&#xe9;part"/>
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -51,7 +51,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="lb_arrivalCity">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Ville d&apos;arriv&#xe9;e"/>
+        <Property name="text" type="java.lang.String" value="A&#xe9;roport d&apos;arriv&#xe9;e"/>
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -61,7 +61,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="lb_departureDate">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Date de d&#xe9;part (jj/mm/aaaa)"/>
+        <Property name="text" type="java.lang.String" value="Date de d&#xe9;part (aaaa-mm-dd)"/>
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
