@@ -6,6 +6,7 @@
 package view;
 
 import controller.NewFlightController;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -13,12 +14,14 @@ import controller.NewFlightController;
  */
 public class NewFlightView extends javax.swing.JPanel {
 
-    
+    NewFlightController newFlightController;
     /**
      * Creates new form NewFlightView
      */
     public NewFlightView(NewFlightController nfc) {
+        this.newFlightController = nfc;
         initComponents();
+        this.newFlightController.addCombobox(cb_departureCity, cb_arrivalCity);
     }
     
 
@@ -40,8 +43,8 @@ public class NewFlightView extends javax.swing.JPanel {
         lb_departureTime = new javax.swing.JLabel();
         lb_flightDuration = new javax.swing.JLabel();
         lb_flightprice = new javax.swing.JLabel();
-        cb_departureCity = new javax.swing.JComboBox<String>();
-        cb_arrivalCity = new javax.swing.JComboBox<String>();
+        cb_departureCity = new javax.swing.JComboBox<>();
+        cb_arrivalCity = new javax.swing.JComboBox<>();
         tf_departureDate = new javax.swing.JTextField();
         tf_departureTime = new javax.swing.JTextField();
         tf_flightDuration = new javax.swing.JTextField();
@@ -117,7 +120,6 @@ public class NewFlightView extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(5, 4, 12, 4);
         add(lb_flightprice, gridBagConstraints);
 
-        cb_departureCity.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cb_departureCity.setPreferredSize(new java.awt.Dimension(150, 25));
         cb_departureCity.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -131,7 +133,6 @@ public class NewFlightView extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(5, 4, 5, 4);
         add(cb_departureCity, gridBagConstraints);
 
-        cb_arrivalCity.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cb_arrivalCity.setPreferredSize(new java.awt.Dimension(150, 25));
         cb_arrivalCity.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -207,6 +208,11 @@ public class NewFlightView extends javax.swing.JPanel {
         add(pb_valid, gridBagConstraints);
 
         pb_cancel.setText("Annuler");
+        pb_cancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pb_cancelActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 7;
@@ -220,7 +226,7 @@ public class NewFlightView extends javax.swing.JPanel {
     }//GEN-LAST:event_cb_arrivalCityActionPerformed
 
     private void tf_departureDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_departureDateActionPerformed
-        String departingDate;
+        
     }//GEN-LAST:event_tf_departureDateActionPerformed
 
     private void tf_departureTimeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_departureTimeActionPerformed
@@ -228,7 +234,7 @@ public class NewFlightView extends javax.swing.JPanel {
     }//GEN-LAST:event_tf_departureTimeActionPerformed
 
     private void pb_validActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pb_validActionPerformed
-        // TODO add your handling code here:
+        this.newFlightController.addFlight(cb_departureCity.getSelectedItem().toString(), cb_arrivalCity.getSelectedItem().toString(), tf_departureDate.getText(), tf_departureTime.getText(), tf_flightDuration.getText(), tf_flightPrice.getText());
     }//GEN-LAST:event_pb_validActionPerformed
 
     private void cb_departureCityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb_departureCityActionPerformed
@@ -238,6 +244,22 @@ public class NewFlightView extends javax.swing.JPanel {
     private void tf_flightPriceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_flightPriceActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_tf_flightPriceActionPerformed
+
+    private void pb_cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pb_cancelActionPerformed
+        String confirmMessage = "Les informations saisies seront perdues, voulez vous continuer ?";
+        int selectedOption = JOptionPane.showConfirmDialog(this, confirmMessage,"Cancel",JOptionPane.YES_NO_OPTION);
+            if(selectedOption == JOptionPane.YES_OPTION){
+                
+                cb_arrivalCity.setSelectedIndex(0);
+                cb_departureCity.setSelectedIndex(0);
+                tf_departureDate.setText("");
+                tf_departureTime.setText("");
+                tf_flightDuration.setText("");
+                tf_flightPrice.setText("");
+            
+            }
+           
+    }//GEN-LAST:event_pb_cancelActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

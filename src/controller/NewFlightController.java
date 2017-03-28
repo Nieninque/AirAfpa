@@ -5,12 +5,16 @@
  */
 package controller;
 
+import dao.AirportDAO;
 import dao.FlightDAO;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
+import model.Airport;
 import model.Flight;
 
 /**
@@ -20,41 +24,49 @@ import model.Flight;
 public class NewFlightController {
 
     FlightDAO fDao = new FlightDAO();
+    Flight fModel = new Flight();
     
     public NewFlightController(FlightDAO flightdao) {
-        
+        this.fDao = flightdao;
     }
 
     //methode called in the listener of the validation button of the new flight view
-    public void addFlight(String departingAirport, String arrivalAirport, String departingDate, String departingTime, int flightDuration, double flightPrice) {
+    public void addFlight(String departingAirport, String arrivalAirport, String departingDate, String departingTime, String flightDuration, String flightPrice) {
 
-        //instanciation of a Flight, to stock informations of the new flight in it
-        Flight newFlight = new Flight();
-        //instanciation of a newFlightDAO to use his methodes as well
-        FlightDAO newFlightDao = new FlightDAO();
         //concatenation of the two Strings date and time to insert them on the DateTime zone
         String hour = departingDate + " " + departingTime;
         //initialisation of the error message
-        String errorMessage = "";
+        String errorMessage;
+        //variables needed to parse Strings into int and double
+        int fd;
+        double fp;
+        try {
+            
+            fd = Integer.parseInt(flightDuration); 
+            fp = Double.parseDouble(flightPrice);
+        }catch (Exception ex){
+            errorMessage = "La durée et/ou le tarif ne sont pas correctes";
+            JOptionPane.showMessageDialog(null, errorMessage);
+            return;
+        }
+//TODO airports city => AITA        
 
         //catching types errors on the user input by trying to insert informations on newFlight
         try {
-            newFlight.setDeparting_aita(departingAirport);
-            newFlight.setArrival_aita(arrivalAirport);
-            newFlight.setDeparting_hour(hour);
-            newFlight.setDuration(flightDuration);
-            newFlight.setPrice(flightPrice);
+            this.fModel.setDeparting_aita(departingAirport);
+            this.fModel.setArrival_aita(arrivalAirport);
+            this.fModel.setDeparting_hour(hour);
+            this.fModel.setDuration(fd);
+            this.fModel.setPrice(fp);
         } catch (Exception e) {
-            e.printStackTrace();
             //if newFlight could not be created, the this error message will show in a pop up 
-            errorMessage = "Les données doivent correspondre aux indications"
-                    + "données dans leurs champs respectifs !";
+            errorMessage = "Une erreur est survenue, vérifiez vos entrées et réesseyez";
             JOptionPane.showMessageDialog(null, errorMessage);
             return;
         }
 
-        if (this.blinkFlight(newFlight)) {
-            Flight createdFlight = newFlightDao.create(newFlight);
+        if (this.blinkFlight(this.fModel)) {
+            Flight createdFlight = this.fDao.create(this.fModel);
         } else {
             //if the blinkFlight methode return false, this error message in a pop up
             errorMessage = "Les informations saisies ne sont pas cohérentes, "
@@ -63,14 +75,14 @@ public class NewFlightController {
             JOptionPane.showMessageDialog(null, errorMessage);
         }
 
-    }
+    }//end addFlight methode
 
     //blinking a bit my code (after the casting of the values on addFlight methode)
     public boolean blinkFlight(Flight newFlight) {
 
         //preparing casting of a String into a date to compare it
         String hour = newFlight.getDeparting_hour();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy hh:mm");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm");
         
         Date dateTime = null; 
         //get today's dateTime
@@ -93,6 +105,8 @@ public class NewFlightController {
             dateTime = sdf.parse(hour);
         } catch (ParseException ex) {
             ex.printStackTrace();
+            String errorMessage = "La date saisie est incorrecte";
+            JOptionPane.showMessageDialog(null, errorMessage);
             return false;
         }
 
@@ -118,8 +132,21 @@ public class NewFlightController {
 
         //I think this is enought tests to say "you can go to database" !
         return true;
-    }
+    }//end blinking methode
     
-    
+    public void addCombobox(JComboBox cb_departureCity, JComboBox cb_arrivalCity) {
+        
+        //add airports cities in comboBoxes
+        AirportDAO airportDAO = new AirportDAO();
+        ArrayList<Airport> airports = new ArrayList<>();
+        
+        airports = airportDAO.getAll();
+        
+        for(int i = 0; i < airports.size(); i++){
+            cb_departureCity.addItem(airports.get(i).getCity());
+            cb_arrivalCity.addItem(airports.get(i).getCity());
+        }
 
+    }//end addCombobox methode
+    
 }
