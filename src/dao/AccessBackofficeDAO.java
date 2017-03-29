@@ -16,8 +16,6 @@ import model.AccessBackoffice;
 /**
  *
  * @author Salim El Moussaoui <salim.elmoussaoui.afpa2017@gmail.com>
- * @author Cedric DELHOME
- * @author Laure-Helene Soyeux
  */
 public class AccessBackofficeDAO extends DAO<AccessBackoffice, Long> {
 
@@ -36,7 +34,7 @@ public class AccessBackofficeDAO extends DAO<AccessBackoffice, Long> {
     public AccessBackoffice create(AccessBackoffice access_backoffice) {
 
         AccessBackoffice access_backofficeCreate = new AccessBackoffice();
-        
+
         if (this.bddmanager.connect()) {
 
             try {
@@ -45,8 +43,11 @@ public class AccessBackofficeDAO extends DAO<AccessBackoffice, Long> {
                 String requete = "INSERT INTO access_backoffice ( "
                         + "user_id,\n"
                         + " nickname,\n"
-                        + " password\n"
-                        + ") VALUES (?,?,MD5(?))";
+                        + " password,\n"
+                        + " isAdmin,\n"
+                        + " isBlocked,\n"
+                        + " hasChanged,\n"
+                        + ") VALUES (?,?,MD5(?),?,?,?)";
                 // prepared requete and get return generated key
                 PreparedStatement pst = this.bddmanager.getConnectionManager()
                         .prepareStatement(requete);
@@ -54,13 +55,16 @@ public class AccessBackofficeDAO extends DAO<AccessBackoffice, Long> {
                 pst.setLong(1, access_backoffice.getUser_id());
                 pst.setString(2, access_backoffice.getNickname());
                 pst.setString(3, access_backoffice.getPassword());
+                pst.setBoolean(4, access_backoffice.isIsAdmin());
+                pst.setBoolean(5, access_backoffice.isIsBlocked());
+                pst.setBoolean(6, access_backoffice.isHasChanged());
                 // excute insert row in table
                 int insert = pst.executeUpdate();
                 // if insert in table 
                 if (insert != 0) {
-                        
-                        // assign find access_backoffice params primary key user_id  in object return
-                        access_backofficeCreate = this.find(access_backoffice.getUser_id());
+
+                    // assign find access_backoffice params primary key user_id  in object return
+                    access_backofficeCreate = this.find(access_backoffice.getUser_id());
                 }
             } catch (SQLException ex) {
                 ex.printStackTrace();
@@ -91,22 +95,28 @@ public class AccessBackofficeDAO extends DAO<AccessBackoffice, Long> {
                 // create requete 
                 String requete = "Update access_backoffice set";
                 requete += " nickname = ?";
-                if(! access_backoffice.getPassword().isEmpty()){
-                 requete += ", password = MD5(?)";                   
-                }                
-                requete +=" WHERE user_id = ?";
+                requete += ", isAdmin = ?";
+                requete += ", isBlocked = ?";
+                requete += ", hasChanged = ?";
+                if (!access_backoffice.getPassword().isEmpty()) {
+                    requete += ", password = MD5(?)";
+                }
+                requete += " WHERE user_id = ?";
                 // prepared requete 
                 PreparedStatement pst = this.bddmanager
                         .getConnectionManager().prepareStatement(requete);
                 // insert value in requete
                 pst.setString(1, access_backoffice.getNickname());
-                if(!access_backoffice.getPassword().isEmpty()){
-                pst.setString(2, access_backoffice.getPassword());
+                pst.setBoolean(2, access_backoffice.isIsAdmin());
+                pst.setBoolean(3, access_backoffice.isIsBlocked());
+                pst.setBoolean(4, access_backoffice.isHasChanged());
+                if (!access_backoffice.getPassword().isEmpty()) {
+                    pst.setString(5, access_backoffice.getPassword());
                 }
-                if(! access_backoffice.getPassword().isEmpty()){           
-                    pst.setLong(3, access_backoffice.getUser_id());
-                }else{
-                    pst.setLong(2, access_backoffice.getUser_id()); 
+                if (!access_backoffice.getPassword().isEmpty()) {
+                    pst.setLong(6, access_backoffice.getUser_id());
+                } else {
+                    pst.setLong(5, access_backoffice.getUser_id());
                 }
 
                 // excute update row in table
@@ -190,7 +200,10 @@ public class AccessBackofficeDAO extends DAO<AccessBackoffice, Long> {
                     AccessBackoffice el = new AccessBackoffice(
                             rs.getLong("user_id"),
                             rs.getString("nickname"),
-                            rs.getString("password")
+                            rs.getString("password"),
+                            rs.getBoolean("isAdmin"),
+                            rs.getBoolean("isBlocked"),
+                            rs.getBoolean("hasChanged")
                     );
                     listAccessBackoffice.add(el);
 
@@ -235,6 +248,9 @@ public class AccessBackofficeDAO extends DAO<AccessBackoffice, Long> {
                     access_backoffice.setUser_id(rs.getLong("user_id"));
                     access_backoffice.setNickname(rs.getString("nickname"));
                     access_backoffice.setPassword(rs.getString("password"));
+                    access_backoffice.setIsAdmin(rs.getBoolean("isAdmin"));
+                    access_backoffice.setIsBlocked(rs.getBoolean("isBlocked"));
+                    access_backoffice.setHasChanged(rs.getBoolean("hasChanged"));
                 }
 
             } catch (SQLException ex) {
@@ -248,7 +264,49 @@ public class AccessBackofficeDAO extends DAO<AccessBackoffice, Long> {
 
         return access_backoffice;
     }
+    /**
+     * find access_backoffice
+     *
+     * @param primary_key
+     * @return access_backoffice
+     */
 
+    public AccessBackoffice find(String login) {
+        // create array airport empty
+        AccessBackoffice access_backoffice = new AccessBackoffice();
+        //check if connect db
+        if (this.bddmanager.connect()) {
+
+            try {
+                // create statement for find 
+                Statement st = this.bddmanager.getConnectionManager()
+                        .createStatement();
+                // create requete add primary key
+                String requete = "SELECT * FROM access_backoffice WHERE nickname LIKE '" + login+"'";
+                // excute requete
+                ResultSet rs = st.executeQuery(requete);
+                // if result is full
+                if (rs.next()) {
+                    // insert airports in object                   
+                    access_backoffice.setUser_id(rs.getLong("user_id"));
+                    access_backoffice.setNickname(rs.getString("nickname"));
+                    access_backoffice.setPassword(rs.getString("password"));
+                    access_backoffice.setIsAdmin(rs.getBoolean("isAdmin"));
+                    access_backoffice.setIsBlocked(rs.getBoolean("isBlocked"));
+                    access_backoffice.setHasChanged(rs.getBoolean("hasChanged"));
+                }
+
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                return access_backoffice;
+            }
+
+        } else {
+            return access_backoffice;
+        }
+
+        return access_backoffice;
+    }
     /**
      * It checks if the object access_backoffice is filled or empty
      *
@@ -259,7 +317,7 @@ public class AccessBackofficeDAO extends DAO<AccessBackoffice, Long> {
         boolean isValid = true;
 
         // if id is empty
-        if (access_backoffice.getUser_id()== 0) {
+        if (access_backoffice.getUser_id() == 0) {
             isValid = false;
         }
 

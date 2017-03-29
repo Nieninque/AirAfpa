@@ -16,8 +16,6 @@ import model.Function;
 /**
  *
  * @author Salim El Moussaoui <salim.elmoussaoui.afpa2017@gmail.com>
- * @author Cedric DELHOME
- * @author Laure-Helene Soyeux
  */
 public class FunctionDAO extends DAO<Function, Integer> {
 

@@ -25,8 +25,9 @@ public class FlightDAOTest {
     public void testCreate() {
         System.out.println("create");
         // create object flight    
-        Flight flight = new Flight(0, "MRS", "FNJ",
-                "2017-03-20 05:30:00.0", 400, 275.75, 1, 0, 3, 4, 5, false);
+        Flight flight = new Flight(0, "MRS", "Marseille" , "France",
+            "FNJ", "Pyongyang" , "Corée du Nord",
+            "2017-03-20 05:30:00.0", 400, 275.75, 1, 0, 3, 4, 5, false);
         FlightDAO flightDAO = new FlightDAO();
         // find flight  create 
         Flight expResult = flightDAO.find(flight.getId());
@@ -52,7 +53,8 @@ public class FlightDAOTest {
     public void testUpdate() {
         System.out.println("update");
         // create object flight      
-        Flight flightInsert = new Flight(0, "FNJ", "LAS", "2017-03-20 05:30:00",
+        Flight flightInsert = new Flight(0, "FNJ", "Pyongyang" , "Corée du Nord", 
+                "LAS", "Las Vegas" , "USA", "2017-03-20 05:30:00",
                 400, 478.75, 0, 0, 0, 0, 0, false);
         // instatied flightDAO
         FlightDAO flightDAO = new FlightDAO();
@@ -95,7 +97,8 @@ public class FlightDAOTest {
         FlightDAO flightDAO = new FlightDAO();
 
         // create object flight	
-        Flight flightInsert = new Flight(0, "TLS", "MRS", "2017-03-20 05:30:00",
+        Flight flightInsert = new Flight(0, "TLS", "Toulouse", "France", 
+                "MRS", "Marseille", "France", "2017-03-20 05:30:00",
                 250, 175.75, 1, 2, 3, 4, 5, true);
         // find flight  create 
         Flight findFlight = flightDAO.find(flightInsert.getId());

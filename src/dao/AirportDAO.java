@@ -10,13 +10,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.Airport;
+import model.Flight;
+import model.Flight.InOut;
 
 /**
  *
  * @author Salim El Moussaoui <salim.elmoussaoui.afpa2017@gmail.com>
- * @author Cedric DELHOME
- * @author Laure-Helene Soyeux
  */
 public class AirportDAO extends DAO<Airport, String> {
 
@@ -248,5 +250,6 @@ public class AirportDAO extends DAO<Airport, String> {
         }
         return isValid;
     }
-
+    
+    
 }
