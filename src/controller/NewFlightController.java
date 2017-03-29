@@ -46,7 +46,7 @@ public class NewFlightController {
         try {
             fd = Integer.parseInt(flightDuration); 
             fp = Double.parseDouble(flightPrice);
-        }catch (Exception ex){
+        }catch (NumberFormatException ex){
             errorBlink = "La durée et/ou le tarif ne sont pas correctes";
             JOptionPane.showMessageDialog(null, errorBlink);
             return;
@@ -77,14 +77,13 @@ public class NewFlightController {
         //pass into blink methode to say if the flight is valid
         if (this.blinkFlight(this.fModel)) {
            
-            Flight createdFlight = this.fDao.create(this.fModel);
+            this.fDao.create(this.fModel);
             String success = "Le vol a été ajouté aux vols en attente";
             JOptionPane.showMessageDialog(null, success);
             
         }else {
             //if the blinkFlight methode return false, this error message in a pop up
             JOptionPane.showMessageDialog(null, errorBlink);
-            return;
         }
         
     }//end addFlight methode
@@ -141,7 +140,7 @@ public class NewFlightController {
         
         //add airports IATA in comboBoxes
         AirportDAO airportDAO = new AirportDAO();
-        ArrayList<Airport> airports = new ArrayList<>();
+        ArrayList<Airport> airports;
         
         airports = airportDAO.getAll();
         
