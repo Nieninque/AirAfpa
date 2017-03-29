@@ -230,19 +230,21 @@ public class NewFlightView extends javax.swing.JPanel {
     }//GEN-LAST:event_tf_departureDateActionPerformed
 
     private void tf_departureTimeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_departureTimeActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_tf_departureTimeActionPerformed
 
     private void pb_validActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pb_validActionPerformed
-        this.newFlightController.addFlight(cb_departureCity.getSelectedItem().toString(), cb_arrivalCity.getSelectedItem().toString(), tf_departureDate.getText(), tf_departureTime.getText(), tf_flightDuration.getText(), tf_flightPrice.getText());
+        this.newFlightController.addFlight(cb_departureCity.getSelectedItem().toString(), 
+                cb_arrivalCity.getSelectedItem().toString(), tf_departureDate.getText(),
+                tf_departureTime.getText(), tf_flightDuration.getText(), tf_flightPrice.getText());
     }//GEN-LAST:event_pb_validActionPerformed
 
     private void cb_departureCityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb_departureCityActionPerformed
-        // TODO add your handling code here:
+       
     }//GEN-LAST:event_cb_departureCityActionPerformed
 
     private void tf_flightPriceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_flightPriceActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_tf_flightPriceActionPerformed
 
     private void pb_cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pb_cancelActionPerformed

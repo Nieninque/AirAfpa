@@ -9,9 +9,11 @@ import dao.AirportDAO;
 import dao.FlightDAO;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.DateTimeException;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import model.Airport;
@@ -32,26 +34,32 @@ public class NewFlightController {
     }
 
     //methode called in the listener of the validation button of the new flight view
-    public void addFlight(String departingAirport, String arrivalAirport, String departingDate, String departingTime, String flightDuration, String flightPrice) {
+    public void addFlight(String departingAirport, String arrivalAirport, String departingDate,
+            String departingTime, String flightDuration, String flightPrice) {
 
         //concatenation of the two Strings todayDate and time to insert them on the DateTime zone
         String hour = departingDate + " " + departingTime + ":00";
-        //initialisation of the error message
-        String errorMessage;
+        
         //variables needed to parse Strings into int and double
         int fd;
         double fp;
+        //convert string into num
         try {
-            
             fd = Integer.parseInt(flightDuration); 
             fp = Double.parseDouble(flightPrice);
         }catch (Exception ex){
-            errorMessage = "La durée et/ou le tarif ne sont pas correctes";
-            JOptionPane.showMessageDialog(null, errorMessage);
+            errorBlink = "La durée et/ou le tarif ne sont pas correctes";
+            JOptionPane.showMessageDialog(null, errorBlink);
+            return;
+        }
+        
+        //verification of the date 
+        if(!this.verifyDate(departingDate)){
+            errorBlink = "La date est invalide";
+            JOptionPane.showMessageDialog(null, errorBlink);
             return;
         }
        
-
         //catching types errors on the user input by trying to insert informations on newFlight
         try {
             this.fModel.setDeparting_aita(departingAirport);
@@ -61,18 +69,20 @@ public class NewFlightController {
             this.fModel.setPrice(fp);
         } catch (Exception e) {
             //if newFlight could not be created, the this error message will show in a pop up 
-            errorMessage = "Une erreur est survenue, vérifiez vos entrées et réesseyez";
-            JOptionPane.showMessageDialog(null, errorMessage);
+            errorBlink = "Une erreur est survenue, vérifiez vos entrées et réesseyez";
+            JOptionPane.showMessageDialog(null, errorBlink);
             return;
         }
         
+        //pass into blink methode to say if the flight is valid
         if (this.blinkFlight(this.fModel)) {
+           
             Flight createdFlight = this.fDao.create(this.fModel);
             String success = "Le vol a été ajouté aux vols en attente";
             JOptionPane.showMessageDialog(null, success);
+            
         }else {
             //if the blinkFlight methode return false, this error message in a pop up
-            
             JOptionPane.showMessageDialog(null, errorBlink);
             return;
         }
@@ -82,45 +92,37 @@ public class NewFlightController {
     //blinking a bit my code (after the casting of the values on addFlight methode)
     public boolean blinkFlight(Flight newFlight) {
 
-        //preparing casting of a String into a todayDate to compare it
+        //casting of a String into a Date to compare it
         String hour = newFlight.getDeparting_hour();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
-        Date dateTime = null; 
+        Date dateTime = null;
+        
         try {
-            //casting of the todayDate
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
             dateTime = sdf.parse(hour);
-        } catch (ParseException ex) {
-            ex.printStackTrace();
-            errorBlink = "La date saisie est incorrecte";
+        } catch (ParseException e) {
+            this.errorBlink = "La date est incorrecte";
             return false;
         }
         
-        
         //get today's dateTime
-        Date todayDate= new java.util.Date(); 
-        //instanciation of a gregorian calendar to use its methodes
-        GregorianCalendar gregorianCalendar = new GregorianCalendar();
-        gregorianCalendar.setTime(todayDate);
-        //+ 1 day on the todayDate of today
-        gregorianCalendar.add(GregorianCalendar.DAY_OF_MONTH, 1);
-        // back to midnight because it's written "the next day" not "24h later"
-        gregorianCalendar.set(GregorianCalendar.HOUR, 0);
-        gregorianCalendar.set(GregorianCalendar.MINUTE, 0);
-        //even the seconds just to be clean 
-        gregorianCalendar.set(GregorianCalendar.SECOND, 0);
-        //now I can put it back on todayDate
-        todayDate = gregorianCalendar.getTime();
+        Calendar cal = Calendar.getInstance();
+        Date todayDate = cal.getTime();
+       
         
-        
+        //comparing the date with today's date
+        if (dateTime.before(todayDate)){
+            this.errorBlink = "le vol ne peut pas partir avant demain ";
+            return false;
+        }
 
+        //of course a flight could not start and finish on the same airport
         if (newFlight.getDeparting_aita().equals(newFlight.getArrival_aita()) ) {
-            //of course a flight could not start and finish on the same airport, we don't have concorde 
             this.errorBlink = "L'aéroport de départ et celui d'arrivée sont identiques";
             return false;
         }
 
         if (newFlight.getDuration() <= 9) {
-            this.errorBlink = "La durée minimale de vol est de 9 minutes ";
+            this.errorBlink = "La durée du vol ne peut être inférieure à 9 minutes ";
             return false;
         }
 
@@ -130,19 +132,13 @@ public class NewFlightController {
             return false;
         }
         
-        if (todayDate.before(dateTime)){
-            this.errorBlink = "le vol ne peut pas partir avant demain ";
-            //now I have tomorows first hour to compare my input
-            return false;
-        }
-
         //I think this is enought tests to say "you can go to database" !
         return true;
     }//end blinking methode
     
     public void addCombobox(JComboBox cb_departureCity, JComboBox cb_arrivalCity) {
         
-        //add airports cities in comboBoxes
+        //add airports IATA in comboBoxes
         AirportDAO airportDAO = new AirportDAO();
         ArrayList<Airport> airports = new ArrayList<>();
         
@@ -155,4 +151,31 @@ public class NewFlightController {
 
     }//end addCombobox methode
     
+    public boolean verifyDate(String date){
+       
+    String[] dateProperties = date.split("-");
+
+    if(dateProperties != null)
+    {
+        int year = Integer.parseInt(dateProperties[0]);
+
+        // A valid month by default in the case it is not provided.
+        int month = dateProperties.length > 1 ? Integer.parseInt(dateProperties[1]) : 1;
+
+        // A valid day by default in the case it is not provided.
+        int day = dateProperties.length > 2 ? Integer.parseInt(dateProperties[2]) : 1;
+
+        try
+        {
+            LocalDate.of(year, month, day);
+            return true;
+        }
+        catch(DateTimeException e)
+        {
+            return false;
+        }
+    }
+
+    return false; 
+    }
 }

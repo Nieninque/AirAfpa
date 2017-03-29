@@ -17,7 +17,9 @@ import java.util.ArrayList;
  * @author Salim El Moussaoui <salim.elmoussaoui.afpa2017@gmail.com>
  */
 public abstract class DAO<T,S> {
+    
     protected ConnectDB bddmanager = null;
+    
     public DAO(){
         this.bddmanager = ConnectDB.getInstance();
     }
