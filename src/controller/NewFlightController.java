@@ -7,13 +7,12 @@ package controller;
 
 import dao.AirportDAO;
 import dao.FlightDAO;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.DateTimeException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import model.Airport;
@@ -59,6 +58,7 @@ public class NewFlightController {
             JOptionPane.showMessageDialog(null, errorBlink);
             return;
         }
+        
        
         //catching types errors on the user input by trying to insert informations on newFlight
         try {
@@ -94,23 +94,24 @@ public class NewFlightController {
 
         //casting of a String into a Date to compare it
         String hour = newFlight.getDeparting_hour();
-        Date dateTime = null;
+        LocalDateTime dateTime;
         
-        try {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-            dateTime = sdf.parse(hour);
-        } catch (ParseException e) {
-            this.errorBlink = "La date est incorrecte";
+        try{       
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        dateTime = LocalDateTime.parse(hour, formatter);
+        }catch(Exception ex){
+            this.errorBlink = "La date est invalide";
             return false;
         }
         
-        //get today's dateTime
-        Calendar cal = Calendar.getInstance();
-        Date todayDate = cal.getTime();
+        //get tomorrow's dateTime
+        LocalDateTime today = LocalDateTime.now();
+        LocalDateTime tomorrow = today.plus(1, ChronoUnit.DAYS);
+        
        
         
         //comparing the date with today's date
-        if (dateTime.before(todayDate)){
+        if (dateTime.isBefore(tomorrow)){
             this.errorBlink = "le vol ne peut pas partir avant demain ";
             return false;
         }
